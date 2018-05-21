@@ -1,0 +1,415 @@
+{
+	"info": {
+		"_postman_id": "b084de88-77ab-4835-acb5-0a95bad4c0bc",
+		"name": "TudorTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "newAdmin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"type\":\t\"Admin\",\n\t\"username\":\"admin\",\n\t\"password\":\"nimda\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/admin/newUser",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"newUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "newTudor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n\t\"type\": \"Tudor\",\n\t\"username\":\"tudor\",\n\t\"password\":\"rudut\",\n\t\"name\": \"dr Anna Grim\",\n\t\"age\": 33,\n\t\"experience\": \"SW Specialist\",\n\t\"specialization\": \"hacking\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/admin/newUser",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"newUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "newCustomer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"type\": \"Customer\",\n\t\"username\":\"customer\",\n\t\"password\":\"remotsuc\",\n\t\"name\": \"Bill Daniels\",\n\t\"age\": 29,\n\t\"bio\": \"SW Tester\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/admin/newUser",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"newUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteTudor",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/admin/deleteUser/Tudor/5",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"deleteUser",
+						"Tudor",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getTudor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/admin/getUser/Tudor/8",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"getUser",
+						"Tudor",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/admin/getUser/Tudor/8",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"getUser",
+						"Tudor",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "newQuestion",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n\t\"title\":\"myquestion\",\n\t\"body\": \"myquestion myquestion myquestion myquestion myquestion myquestion myquestion\",\n\t\"specialization\": \"spec\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/customer/newQuestion",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"newQuestion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getMyQuestions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/customer/getMyQuestions",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"getMyQuestions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getQuestion",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/customer/getQuestion/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"getQuestion",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "archiveQuestion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/customer/archiveQuestion/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"archiveQuestion",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteQuestion",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/customer/deleteQuestion/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"deleteQuestion",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unarchiveQuestion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/customer/unarchiveQuestion/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"unarchiveQuestion",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "newAnswer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n\t\"title\":\"myanswer\",\n\t\"body\": \"myanswer myanswer myanswer myanswer myanswer myanswer myanswer myanswer\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/tudor/newAnswer/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tudor",
+						"newAnswer",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAnswer",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/tudor/deleteAnswer/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tudor",
+						"deleteAnswer",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCustomer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/admin/getUser/Customer/10",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"getUser",
+						"Customer",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteCustomer",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/admin/deleteUser/Customer/6",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"deleteUser",
+						"Customer",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAdmin",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/admin/deleteUser/Admin/7",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"deleteUser",
+						"Admin",
+						"7"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
