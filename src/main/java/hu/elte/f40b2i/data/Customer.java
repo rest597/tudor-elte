@@ -24,7 +24,6 @@ public class Customer extends User implements Serializable {
 
         private String bio;
 
-
         public String getName(){ return this.name; }
         public void setName(String name){ this.name = name; }
 
@@ -38,6 +37,7 @@ public class Customer extends User implements Serializable {
         public ReturnObject createReturnObject(){
                 return new ReturnObject(this.getUserid(),
                         this.getUsername(),
+                        this.getUserType(),
                         this.getAge(),
                         this.getName(),
                         this.getBio());
@@ -48,8 +48,13 @@ public class Customer extends User implements Serializable {
             public String name;
             public String bio;
 
-                ReturnObject(Integer userId, String username, int age, String name, String bio){
-                        super(userId, username);
+                ReturnObject(Integer userId,
+                             String username,
+                             UserType userType,
+                             int age,
+                             String name,
+                             String bio){
+                        super(userId, username, userType);
                         this.age = age;
                         this.name = name;
                         this.bio = bio;

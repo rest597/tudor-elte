@@ -48,16 +48,20 @@ public class User implements Serializable {
 
     // Return object
     public ReturnObject createReturnObject(){
-        return new ReturnObject(this.getUserid(), this.getUsername());
+        return new ReturnObject(this.getUserid(),
+                this.getUsername(),
+                this.getUserType());
     }
 
     public class ReturnObject{
         public Integer userId;
         public String username;
+        public UserType userType;
 
-        ReturnObject(Integer userId, String username){
+        ReturnObject(Integer userId, String username, UserType userType){
             this.userId = userId;
             this.username = username;
+            this.userType = userType;
         }
     }
 

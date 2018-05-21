@@ -42,6 +42,7 @@ public class Tudor extends User implements Serializable {
     public ReturnObject createReturnObject(){
         return new ReturnObject(this.getUserid(),
                 this.getUsername(),
+                this.getUserType(),
                 this.getAge(),
                 this.getName(),
                 this.getSpecialization(),
@@ -54,8 +55,14 @@ public class Tudor extends User implements Serializable {
         public String specialization;
         public String experience;
 
-        ReturnObject(Integer userId, String username, int age, String name, String specialization, String experience){
-            super(userId, username);
+        ReturnObject(Integer userId,
+                     String username,
+                     UserType userType,
+                     int age,
+                     String name,
+                     String specialization,
+                     String experience){
+            super(userId, username, userType);
             this.age = age;
             this.name = name;
             this.specialization = specialization;

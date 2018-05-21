@@ -1,11 +1,6 @@
 package hu.elte.f40b2i.rest;
 
-import hu.elte.f40b2i.data.User;
-import hu.elte.f40b2i.data.UserRepository;
-import hu.elte.f40b2i.data.Tudor;
-import hu.elte.f40b2i.data.TudorRepository;
-import hu.elte.f40b2i.data.Customer;
-import hu.elte.f40b2i.data.CustomerRepository;
+import hu.elte.f40b2i.data.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("admin")
@@ -37,6 +35,11 @@ public class AdminManager {
     @Autowired
     private CustomerRepository customerDao;
 
+    @Autowired
+    private QuestionRepository questionDao;
+
+    @Autowired
+    private AnswerRepository answerDao;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -44,7 +47,7 @@ public class AdminManager {
     }
 
     @PostMapping("/newUser")
-    public ResponseEntity<IdMessageObject> newUserHandler(@RequestBody(required=true) User user) {
+    public ResponseEntity<IdMessageObject> newUserHandler(@RequestBody(required=false) User user) {
         String resMsg = " saved";
         Integer resId = 0;
 
@@ -85,6 +88,17 @@ public class AdminManager {
         return new ResponseEntity<>(res,HttpStatus.OK);
     }
 
+    @GetMapping("/getAllUser")
+    public ResponseEntity<List<User.ReturnObject>> getAllUserHandler() {
+
+        List<User> resultUL = this.userDao.findAll();
+        List<User.ReturnObject> result = resultUL
+                .stream().map(u -> u.createReturnObject())
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 
 
     @DeleteMapping("/deleteUser/{type}/{userid}")
@@ -108,6 +122,33 @@ public class AdminManager {
         }
         return new ResponseEntity<>(resMsg,HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/getAllQuestions")
+    public ResponseEntity<List<Question.ReturnObject>> getAllQuestionsHandler() {
+
+        List<Question> resultQL = this.questionDao.findAll();
+        List<Question.ReturnObject> result = resultQL
+                .stream().map(q -> q.createReturnObject())
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllAnswersForQuestion/{questionId}")
+    public ResponseEntity<List<Answer.ReturnObject>> getAllAnswersForQuestionHandler(
+            @PathVariable("questionId") Integer questionId) {
+
+        Question question = this.questionDao.getOne(questionId);
+
+        List<Answer> resultAL = this.answerDao.findAnswerByQuestion(question);
+        List<Answer.ReturnObject> result = resultAL
+                .stream().map(a -> a.createReturnObject())
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
 
     private String encryptPassword(String password){
         return this.passwordEncoder.encode(password);
