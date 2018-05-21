@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +30,16 @@ public class TudorManager {
     @Autowired
     private TudorRepository tudorDao;
 
+    @GetMapping("/getMySpec")
+    public ResponseEntity<String> getMySpecHandler(Authentication a) {
+        Tudor me = this.tudorDao.getOne(((AuthUserPrincipal)a.getPrincipal()).getId());
+
+        return new ResponseEntity<>(me.getSpecialization(), HttpStatus.OK);
+    }
+
     @GetMapping("/getAllQuestions")
-    public ResponseEntity<List<Question.ReturnObject>> getAllQuestionsHandler() {
-        Tudor me = this.tudorDao.getOne(8);
+    public ResponseEntity<List<Question.ReturnObject>> getAllQuestionsHandler(Authentication a) {
+        Tudor me = this.tudorDao.getOne(((AuthUserPrincipal)a.getPrincipal()).getId());
 
         List<Question> resultQL = this.questionDao.findQuestionBySpecialization(me.getSpecialization());
         List<Question.ReturnObject> result = resultQL
@@ -48,16 +56,31 @@ public class TudorManager {
         return new ResponseEntity<>(res.createReturnObject(),HttpStatus.OK);
     }
 
+    @GetMapping("/getAllAnswersForQuestion/{questionId}")
+    public ResponseEntity<List<Answer.ReturnObject>> getAllAnswersForQuestionHandler(
+            @PathVariable("questionId") Integer questionId) {
+
+        Question question = this.questionDao.getOne(questionId);
+
+        List<Answer> resultAL = this.answerDao.findAnswerByQuestion(question);
+        List<Answer.ReturnObject> result = resultAL
+                .stream().map(a -> a.createReturnObject())
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @PostMapping("/newAnswer/{questionId}")
     public ResponseEntity<IdMessageObject> newAnswerHandler(@PathVariable("questionId") Integer questionId,
-                                                     @RequestBody(required=true) Answer answer) {
+                                                     @RequestBody(required=true) Answer answer,
+                                                            Authentication a) {
 
         // Set question
         Question question = this.questionDao.getOne(questionId);
         answer.setQuestion(question);
 
         // Set tudor
-        Tudor me = this.tudorDao.getOne(8);
+        Tudor me = this.tudorDao.getOne(((AuthUserPrincipal)a.getPrincipal()).getId());
         answer.setTudor(me);
 
         // Set date

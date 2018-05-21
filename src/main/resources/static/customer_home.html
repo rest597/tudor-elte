@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Customer Dashboard</title>
+
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FA CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+            <h1>Customer Dashboard
+
+            </h1>
+
+            <div>
+                <form th:action="@{/logout}" method="post">
+                    <input class="btn btn-info btn-sm" type="submit" value="Sign Out"/>
+                </form>
+            </div>
+
+            <br />
+            <h2>Control buttons</h2>
+            <div>
+                <button type="button" data-toggle="modal" data-target="#newQuestionModal" class="btn btn-info btn-sm"><span class="fa fa-users"></span> New Question</button>
+                <!-- <button type="button" data-toggle="modal" data-target="#tudorModal" class="btn btn-info btn-sm"><span class="fa fa-users"></span> Edit My Profile</button> -->
+                <button type="button" onclick="deleteMyProfile()" class="btn btn-danger btn-sm"><span class="fa fa-users"></span> Delete My Profile</button>
+            </div>
+
+            <br />
+            <br />
+            <h2>Questions</h2>
+            <div class="table-responsive">
+                <table id="userQuestionTable" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Body</th>
+                        <th>Specialization</th>
+                        <th>Archived?</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </main>
+
+        <!-- Answer Modal -->
+        <div class="modal fade" id="questionModal" tabindex="-1" role="dialog" aria-labelledby="questionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="questionModalLabel">Question details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <h2>Answers</h2>
+                        <div class="table-responsive">
+                            <table id="answerTable" class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Id</th>
+                                    <th>Title</th>
+                                    <th>Date</th>
+                                    <th>Body</th>
+                                    <th>Rating</th>
+                                    <th>Archived?</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Question Modal -->
+        <div class="modal fade" id="newQuestionModal" tabindex="-2" role="dialog" aria-labelledby="newQuestionModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newQuestionModalLabel">New Question</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form onsubmit="newQuestion()">
+                            <div class="form-group">
+                                <label for="newQuestionTitle">Title</label>
+                                <input type="text" class="form-control" id="newQuestionTitle" placeholder="Enter the question title" />
+                            </div>
+                            <div class="form-group">
+                                <label for="newQuestionSpec">Specialization</label>
+                                <input type="text" class="form-control" id="newQuestionSpec" placeholder="Specialization" />
+                            </div>
+                            <div class="form-group">
+                                <label for="newQuestionBody">Question body</label>
+                                <textarea class="form-control" id="newQuestionBody" placeholder="Write the question"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Save</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.1.0.min.js" ></script>
+<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/customer_home.js"></script>
+</body>
+</html>

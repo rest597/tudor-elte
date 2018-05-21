@@ -22,7 +22,7 @@ public class AuthUserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         logger.info("Authenticating " + username);
         User user = userRepository.findUserByUsername(username);
-        logger.info("User data " + user.getPassword() + " " + user.getUserType());
+        logger.info("User type: " + user.getUserType());
         return new AuthUserPrincipal(user);
     }
 }

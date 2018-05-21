@@ -17,13 +17,17 @@ function loadAnswers(questionId){
     //Load answers
     $.ajax({
         type: "GET",
-        url: "/admin/getAllAnswersForQuestion/" + questionId,
+        url: "/customer/getAllAnswersForQuestion/" + questionId,
         dataType: "json",
         success: function(response){
             //Important code starts here to populate table
             jQuery.each(response, function(i,data) {
-                var buttons = '<button onclick="deleteAnswer(' + data.answerId + ')" class="btn btn-danger btn-sm">';
-                buttons += '<span class="fa fa-trash"></span></button>';
+                var buttons = '';
+                
+                if(!data.archived){
+                    buttons += '<button onclick="rateAnswer(' + data.answerId + ')" class="btn btn-info btn-sm">';
+                    buttons += '<span class="fa fa-star"></span></button>';
+                }
 
                 var ratingStr = 'No rating';
                 if(parseInt(data.rating) > 0){
@@ -47,12 +51,12 @@ function loadAnswers(questionId){
     });
 }
 
-function deleteUser(userType, userId){
+function deleteMyProfile(){
     //Delete user
-    if(confirm('Delete ' + userType + ': #' + userId + '?')){
+    if(confirm('Delete your profile?')){
         $.ajax({
             type: "DELETE",
-            url: "/admin/deleteUser/" + userType + "/" + userId,
+            url: "/user/deleteMyprofile",
             success: function(response){
                 location.reload();
             },
@@ -66,11 +70,11 @@ function deleteUser(userType, userId){
 }
 
 function deleteQuestion(questionId){
-    //Delete user
+    //Delete question
     if(confirm('Delete question: #' + questionId + '?')){
         $.ajax({
             type: "DELETE",
-            url: "/admin/deleteQuestion/" + questionId,
+            url: "/customer/deleteQuestion/" + questionId,
             success: function(response){
                 location.reload();
             },
@@ -83,37 +87,18 @@ function deleteQuestion(questionId){
     }
 }
 
-function deleteAnswer(answerId){
-    //Delete user
-    if(confirm('Delete anwser: #' + answerId + '?')){
-        $.ajax({
-            type: "DELETE",
-            url: "/admin/deleteAnswer/" + answerId,
-            success: function(response){
-                location.reload();
-            },
-            error: function(a, b, c){
-                console.log(a);
-                console.log(b);
-                console.log(c);
-            }
-        });
-    }}
 
-function newCustomer(){
+function newQuestion(){
     var newCustomerData = {
-        "type": "Customer",
-        "username": $('#customerUsername').val(),
-        "password": $('#customerPassword').val(),
-        "name": $('#customerName').val(),
-        "age": $('#customerAge').val(),
-        "bio": $('#customerBio').val()
+        "title": $('#newQuestionTitle').val(),
+        "body": $('#newQuestionBody').val(),
+        "specialization": $('#newQuestionSpec').val()
     };
 
-    //Save customer
+    //Save question
     $.ajax({
         type: "POST",
-        url: "/admin/newUser",
+        url: "/customer/newQuestion",
         data: JSON.stringify(newCustomerData),
         dataType: "json",
         contentType: "application/json",
@@ -130,98 +115,77 @@ function newCustomer(){
     return false;
 }
 
-function newTudor(){
-    var newTudorData = {
-        "type": "Tudor",
-        "username": $('#tudorUsername').val(),
-        "password": $('#tudorPassword').val(),
-        "name": $('#tudorName').val(),
-        "age": $('#tudorAge').val(),
-        "specialization": $('#tudorSpec').val(),
-        "experience": $('#tudorExperience').val()
-    };
-
-    //Save tudor
-    $.ajax({
-        type: "POST",
-        url: "/admin/newUser",
-        data: JSON.stringify(newTudorData),
-        dataType: "json",
-        contentType: "application/json",
-        success: function(response, xhr){
-            location.reload();
-        },
-        error: function(a, b, c){
-            console.log(a);
-            console.log(b);
-            console.log(c);
-        }
-    });
-
-    return false;
+function archiveQuestion(questionId){
+    //Delete user
+    if(confirm('Archive question: #' + questionId + '?')){
+        $.ajax({
+            type: "POST",
+            url: "/customer/archiveQuestion/" + questionId,
+            success: function(response){
+                location.reload();
+            },
+            error: function(a, b, c){
+                console.log(a);
+                console.log(b);
+                console.log(c);
+            }
+        });
+    }
 }
 
-function newAdmin(){
-    var newAdminData = {
-        "type": "Admin",
-        "username": $('#adminUsername').val(),
-        "password": $('#adminPassword').val(),
-    };
-
-    //Save admin
-    $.ajax({
-        type: "POST",
-        url: "/admin/newUser",
-        data: JSON.stringify(newAdminData),
-        dataType: "json",
-        contentType: "application/json",
-        success: function(response, xhr){
-            location.reload();
-        },
-        error: function(a, b, c){
-            console.log(a);
-            console.log(b);
-            console.log(c);
-        }
-    });
-
-    return false;
+function unarchiveQuestion(questionId){
+    //Delete user
+    if(confirm('Unarchive question: #' + questionId + '?')){
+        $.ajax({
+            type: "POST",
+            url: "/customer/unarchiveQuestion/" + questionId,
+            success: function(response){
+                location.reload();
+            },
+            error: function(a, b, c){
+                console.log(a);
+                console.log(b);
+                console.log(c);
+            }
+        });
+    }
 }
 
-$(function() {
-    //Load users
-    $.ajax({
-        type: "GET",
-        url: "/admin/getAllUser",
-        dataType: "json",
-        success: function(response){
-            //Important code starts here to populate table
-            jQuery.each(response, function(i,data) {
-                //var buttons = '<button onclick="editUser(' + data.userId + ')" class="btn btn-info btn-sm">';
-                //buttons += '<span class="fa fa-bars"></span></button> '
-                var buttons = '<button onclick="deleteUser(\'' + data.userType + '\', ' + data.userId + ')" class="btn btn-danger btn-sm">';
-                buttons += '<span class="fa fa-trash"></span></button>';
+function rateAnswer(answerId){
+    //Delete user
+    var promptRes = prompt("Please enter your rating (1-5):", "");
 
-                var dataStr = "<tr><td>" + (i+1) + "</td>";
-                dataStr += "<td>" + data.userId + "</td>";
-                dataStr += "<td>" + data.username + "</td>";
-                dataStr += "<td>" + data.userType + "</td>"
-                dataStr += "<td>" + buttons + "</td></tr>"
-                $("#userDataTable tbody").append(dataStr);
-            });
-        }
-    });
- 
+    if(promptRes != null && promptRes != "" && parseInt(promptRes) > 0 && parseInt(promptRes) <= 5 ){
+        $.ajax({
+            type: "POST",
+            url: "/customer/rateAnswer/" + answerId + "/" + parseInt(promptRes),
+            success: function(response){
+                location.reload();
+            },
+            error: function(a, b, c){
+                console.log(a);
+                console.log(b);
+                console.log(c);
+            }
+        });
+    }
+}
+
+$(function() { 
     //Load questions  
     $.ajax({
         type: "GET",
-        url: "/admin/getAllQuestions",
+        url: "/customer/getMyQuestions",
         dataType: "json",
         success: function(response){
             //Important code starts here to populate table
             jQuery.each(response, function(i,data) {
                 var buttons = '<button onclick="loadAnswers(' + data.questionId + ')" data-toggle="modal" data-target="#questionModal" class="btn btn-info btn-sm">';
                 buttons += '<span class="fa fa-exclamation"></span></button> '
+                buttons += '<button onclick="archiveQuestion(' + data.questionId + ')" class="btn btn-info btn-sm">';
+                buttons += '<span class="fa fa-archive"></span></button>';
+                buttons += '<button onclick="unarchiveQuestion(' + data.questionId + ')" class="btn btn-secondary btn-sm">';
+                buttons += '<span class="fa fa-archive"></span></button>';
                 buttons += '<button onclick="deleteQuestion(' + data.questionId + ')" class="btn btn-danger btn-sm">';
                 buttons += '<span class="fa fa-trash"></span></button>';
 

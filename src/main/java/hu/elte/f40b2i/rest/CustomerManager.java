@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.Date;
 import java.util.List;
@@ -31,10 +32,10 @@ public class CustomerManager {
 
 
     @PostMapping("/newQuestion")
-    public ResponseEntity<IdMessageObject> newQuestionHandler(@RequestBody(required=false) Question question) {
-
+    public ResponseEntity<IdMessageObject> newQuestionHandler(@RequestBody(required=false) Question question,
+                                                              Authentication a) {
         // Set customer
-        Customer me = this.customerDao.getOne(10);
+        Customer me = this.customerDao.getOne(((AuthUserPrincipal)a.getPrincipal()).getId());
         question.setCustomer(me);
 
         // Set date
@@ -50,8 +51,8 @@ public class CustomerManager {
     }
 
     @GetMapping("/getMyQuestions")
-    public ResponseEntity<List<Question.ReturnObject>> getMyQuestionsHandler() {
-        Customer me = this.customerDao.getOne(10);
+    public ResponseEntity<List<Question.ReturnObject>> getMyQuestionsHandler(Authentication a) {
+        Customer me = this.customerDao.getOne(((AuthUserPrincipal)a.getPrincipal()).getId());
 
         List<Question> resultQL = this.questionDao.findQuestionByCustomer(me);
         List<Question.ReturnObject> result = resultQL
@@ -88,6 +89,20 @@ public class CustomerManager {
         result.setArchived(false);
         this.questionDao.save(result);
         return new ResponseEntity<>("Question unarchived",HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllAnswersForQuestion/{questionId}")
+    public ResponseEntity<List<Answer.ReturnObject>> getAllAnswersForQuestionHandler(
+            @PathVariable("questionId") Integer questionId) {
+
+        Question question = this.questionDao.getOne(questionId);
+
+        List<Answer> resultAL = this.answerDao.findAnswerByQuestion(question);
+        List<Answer.ReturnObject> result = resultAL
+                .stream().map(a -> a.createReturnObject())
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("/rateAnswer/{answerId}/{rating}")

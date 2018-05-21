@@ -148,6 +148,18 @@ public class AdminManager {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @DeleteMapping("/deleteQuestion/{questionId}")
+    public ResponseEntity<String> deleteQuestionHandler(@PathVariable("questionId") Integer questionId) {
+        this.questionDao.deleteById(questionId);
+        return new ResponseEntity<>("Question deleted",HttpStatus.NO_CONTENT);
+    }
+
+
+    @DeleteMapping("/deleteAnswer/{answerId}")
+    public ResponseEntity<String> deleteAnswerHandler(@PathVariable("answerId") Integer answerId) {
+        this.answerDao.deleteById(answerId);
+        return new ResponseEntity<>("Answer deleted",HttpStatus.NO_CONTENT);
+    }
 
 
     private String encryptPassword(String password){

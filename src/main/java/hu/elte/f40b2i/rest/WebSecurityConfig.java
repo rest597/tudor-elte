@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -19,16 +20,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/css/**","/js/**","/img/**").permitAll()
-                .antMatchers("/", "/home", "/logout").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/tudor/**").hasRole("TUDOR")
+                .antMatchers("/customer/**").hasRole("CUSTOMER")
+                .antMatchers("/admin_home.html").hasRole("ADMIN")
+                .antMatchers("/tudor_home.html").hasRole("TUDOR")
+                .antMatchers("/customer_home.html").hasRole("CUSTOMER")
+                .antMatchers("/user/**").authenticated()
                 .and()
                 .csrf().disable()
                 .formLogin()
                 .loginPage("/login")
+                .successForwardUrl("/user/dispatch")
                 .permitAll()
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login")
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
                 .permitAll();
     }
 
